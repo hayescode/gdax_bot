@@ -9,31 +9,25 @@ app.config['DEBUG'] = True
 #Hardcode trading pair
 product_id = 'BTC-USD'
 
-last_trade_time = ""
-last_trade_price = ""
-last_trade_amount = ""
-
-x = "testing"
-
 def trade():
-    buy = buy_market("BTC-USD", 0.01)
-    buy_order_id = buy["id"]
-    """
-    buy_info = order_status(buy_order_id)
-    buy_price = float(buy_info["executed_value"])
-
-    trade_time = time.strftime("%a, %d %b %Y %H:%M:%S")
-    trade_price = str(buy_price * 100)
-    trade_amount = buy_info["size"]
-
-    last_trade_time = trade_time
-    last_trade_price = trade_price
-    last_trade_amount = str(trade_amount) """
+    order = buy_market("BTC-USD", 0.01)
+    buy_order_id = order["id"]
+    trade = order_status(buy_order_id)
+    size = trade["size"]
+    product_id = trade["product_id"]
+    side = trade["side"]
+    funds = trade["funds"]
+    trade_type = trade["type"]
+    post_only = trade["post_only"]
+    created_at = trade["created_at"]
+    done_at = trade["done_at"]
+    done_reason = trade["done_reason"]
+    fill_fees = trade["fill_fees"]
+    filled_size = trade["filled_size"]
+    executed_value = trade["executed_value"]
+    status = trade["status"]
+    settled = trade["settled"]
     return buy_order_id
-    
-    #print(trade_time, trade_price, trade_amount)
-
-    #time.sleep(5)
 
 
 @app.route("/", methods=["POST", "GET"])
