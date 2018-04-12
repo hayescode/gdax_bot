@@ -1,7 +1,17 @@
 {% extends "base.html"%}
 
 {% block content %}
-<p class="p">{{time}}</p>
-<p class="p">{{price}}</p>
-<p class="p">{{amount}}</p>
+<div id="upper-left">
+    <p>{{time}}</p>
+    <p>{{price}}</p>
+    <p>{{amount}}</p>
+    <p>{{trade_id}}</p>
+
+    <form>
+        <input type="button" class="align-right" value="Buy Market"/>
+        <input type="button" class="align-right" value="Buy Limit"/>
+        <input type="button" class="align-right" value="Sell Market"/>
+        <input type="button" class="align-right" value="Sell Limit"/>
+    </form>
+</div>
 {% endblock %}

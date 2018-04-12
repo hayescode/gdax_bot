@@ -1,10 +1,16 @@
 import sys
 import time
 from orders import buy_market, buy_limit, sell_limit, sell_market, order_status
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, flash
+from flask_sqlalchemy import SQLAlchemy
+from SQL_LOG import Log
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://gdax-bot:thisismyfirstbot!!!BTC@localhost:8889/gdax-bot'
+app.config['SQLALCHEMY_ECHO'] = True
+db = SQLAlchemy(app)
+app.secret_key = 'oaieitoqhwgasd'
 
 #Hardcode trading pair
 product_id = 'BTC-USD'
@@ -13,6 +19,8 @@ def trade():
     order = buy_market("BTC-USD", 0.01)
     buy_order_id = order["id"]
     trade = order_status(buy_order_id)
+
+    trade_id = trade["id"]
     size = trade["size"]
     product_id = trade["product_id"]
     side = trade["side"]
@@ -27,6 +35,12 @@ def trade():
     executed_value = trade["executed_value"]
     status = trade["status"]
     settled = trade["settled"]
+
+    #enter into db
+    new_record = Log(trade_id,size,product_id,side,funds,trade_type,post_only,created_at,done_at,done_reason,fill_fees,filled_size,executed_value,status,settled)
+    db.session.add(new_record)
+    db.session.commit()
+
     return buy_order_id
 
 
