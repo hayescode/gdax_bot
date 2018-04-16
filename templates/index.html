@@ -2,12 +2,27 @@
 
 {% block content %}
 <div id="upper-left">
-    <p>{{time}}</p>
-    <p>{{price}}</p>
-    <p>{{amount}}</p>
-    <p>{{trade_id}}</p>
+    <table>
+        <tr><th>Last Trade Info</th></tr>
+        <tr><td>Time</td>
+            <td>{{time}}</td>
+        </tr>
+        <tr><td>Price</td>
+            <td>{{price}}</td>
+        </tr>
+        <tr><td>Amount</td>
+            <td>{{amount}}</td>
+        </tr>
+        <tr><td>USD Balance</td>
+            <td>{{USD_balance}}</td>
+        </tr>
+        <tr><td>BTC Balance</td>
+            <td>{{BTC_balance}}</td>
+        </tr>
+    </table>
 
-    <form>
+    <form action="/" method="POST">
+        <input type="text" class="align-right"name="amount" />
         <input type="button" class="align-right" value="Buy Market"/>
         <input type="button" class="align-right" value="Buy Limit"/>
         <input type="button" class="align-right" value="Sell Market"/>

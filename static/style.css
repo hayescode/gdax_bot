@@ -10,3 +10,8 @@ body {
 .align-right {
     float: right;
 }
+
+td {
+    border: 1px solid black;
+    background-color: lightsteelblue;
+}
