@@ -86,3 +86,4 @@ def account_status():
 
 
 #{'id': 'd2290b9b-3f02-43a7-9feb-46383fca7958', 'size': '0.01000000', 'product_id': 'BTC-USD', 'side': 'buy', 'funds': '9094.6657317700000000', 'type': 'market', 'post_only': False, 'created_at': '2018-03-29T03:51:14.774247Z', 'done_at': '2018-03-29T03:51:14.784Z', 'done_reason': 'filled', 'fill_fees': '0.2292500000000000', 'filled_size': '0.01000000', 'executed_value': '91.7000000000000000', 'status': 'done', 'settled': True}
+#{'id': 'f62dc307-b9c8-4f88-82b0-d407964fcbc7', 'price': '6770.00000000', 'size': '0.10000000', 'product_id': 'BTC-USD', 'side': 'buy', 'type': 'limit', 'time_in_force': 'GTC', 'post_only': True, 'created_at': '2018-04-21T06:06:30.869272Z''fill_fees': '0.0000000000000000', 'filled_size': '0.00000000', 'executed_value': '0.0000000000000000', 'status': 'open', 'settled': False}

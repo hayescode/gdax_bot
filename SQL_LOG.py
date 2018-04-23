@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect, render_template, flash
 from flask_sqlalchemy import SQLAlchemy
+from orders import order_status
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -41,3 +42,34 @@ class Log(db.Model):
         self.executed_value = executed_value
         self.status = status
         self.settled = settled
+
+
+def record_in_db(order_id):
+    trade = order_status(order_id)
+
+    #prepare for db entry
+    trade_id = trade["id"]
+    size = trade["size"]
+    product_id = trade["product_id"]
+    side = trade["side"]
+    funds = trade["funds"]
+    trade_type = trade["type"]
+    post_only = trade["post_only"]
+    created_at = trade["created_at"]
+    done_at = trade["done_at"]
+    done_reason = trade["done_reason"]
+    fill_fees = trade["fill_fees"]
+    filled_size = trade["filled_size"]
+    executed_value = (float(trade["executed_value"])) * 100
+    status = trade["status"]
+    settled = trade["settled"]
+
+    #enter into db
+    new_record = Log(trade_id,size,product_id,side,funds,trade_type,post_only,created_at,done_at,done_reason,fill_fees,filled_size,executed_value,status,settled)
+    db.session.add(new_record)
+    db.session.commit()
+
+    return
+
+if __name__ == "__SQL_LOG__":
+    record_in_db()

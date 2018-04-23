@@ -1,25 +1,61 @@
-import requests
-import json
-from authentication import GDAXRequestAuth
+import sys
+import time
+from orders import buy_market, buy_limit, sell_limit, sell_market, order_status, account_status
+from flask import Flask, request, redirect, render_template, flash
+from flask_sqlalchemy import SQLAlchemy
+from SQL_LOG import record_in_db
 
-#from https://cryptostag.com/basic-gdax-api-trading-with-python/
+app = Flask(__name__)
+app.config['DEBUG'] = True
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://gdax-bot:thisismyfirstbot!!!BTC@localhost:8889/gdax-bot'
+app.config['SQLALCHEMY_ECHO'] = True
+db = SQLAlchemy(app)
+app.secret_key = 'oaieitoqhwgasd'
 
-#sandbox enviorment
-api_base = 'https://api-public.sandbox.gdax.com'
-api_key = 'dd2efb9335217e11a6484f7885ee00f6'
-api_secret = 'Ex70Sk6buuXzunbYY2LZYpwxdVkTwM26neSGMPA3UW76h11HXzjKgEaKNYzrgGAQLPsxVY6ij4GN/VTdI4kV7Q=='
-passphrase = '6kbsq93uig4'
+#Hardcode trading pair
+product_id = 'BTC-USD'
 
-account_id = "fe15d8d9-3e76-44b7-83eb-e3f26330d343"
+@app.route("/", methods=["POST", "GET"])
+def index():
+    if request.method == "POST":
+        order_type = request.form["order_type"]
+        amount = request.form["amount"]
+        if request.form["price"]:   #if there is a price submitted (i.e. limit order), get the price
+            price = request.form["price"]
+        if order_type == "buy_market":
+            order = buy_market(product_id, amount)
+            order_id = order["id"]
+            record_in_db(order_id)  #record order in db
+        # if order_type == "buy_limit":
+        #     order = buy_limit(product_id, amount, price)
+            
+        # if order_type == "sell_market":
+        #     order = sell_market(product_id, amount)
+        #     order_id = order["id"]
+        #     record_market_in_db(order_id)  #record order in db
+        # if order_type == "sell_limit":
+        #     order = sell_limit(product_id, amount, price)
 
-def account_status():
-    auth = GDAXRequestAuth(api_key, api_secret, passphrase)
-    order_url = api_base + '/accounts/' + account_id
-    response = requests.get(order_url, auth=auth)
-    if response.status_code is not 200:
-        raise Exception('Invalid GDAX Status Code: %d' % response.status_code)
-    return response.json()
 
-#{'id': 'fe15d8d9-3e76-44b7-83eb-e3f26330d343', 'currency': 'BTC', 'balance': '94.4960388400000000', 'available': '94.49603884', 'hold': '0.0000000000000000', 'profile_id': '78798596-4f63-4a81-82b7-61c149532a2a'}
+        buy_info = order_status(order_id)
+        buy_price = float(buy_info["executed_value"])
+        trade_time = time.strftime("%a, %d %b %Y %H:%M:%S")
+        trade_price = format((buy_price * 100), ".2f")
+        trade_amount = buy_info["size"]
 
-print(account_status())
+        #account info
+        account = account_status()
+        BTC = account["balance"]
+        BTC_balance = format(float(BTC), ".4f")
+
+        fiat = buy_info["funds"]
+        fiat_balance = format(float(fiat), ".2f")
+        USD_balance = "$" + str(fiat_balance)
+
+        return render_template("index.html", time=trade_time, price=trade_price, amount=trade_amount, BTC_balance=BTC_balance, USD_balance=USD_balance)
+        #return render_template("index.html", time=last_trade_time, price=last_trade_price, amount=last_trade_amount)
+    else:
+        return render_template("index.html")
+
+
+app.run()

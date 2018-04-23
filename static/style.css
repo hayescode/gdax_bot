@@ -1,16 +1,24 @@
-body {
-    background-color: #5e5e5f;
+body, html, #container {
+    height: 100%;
+    margin: 0px;
 }
 
-#upper-left {
+.row {
+    height: 50%;
+    width: 100%;
+    margin: auto;
+    background-color: aquamarine;
+    box-sizing: border-box;
+    border: 1px solid black;
+}
+.column {
+    min-height: 100%;
     width: 50%;
-    height: 50%
+    float: left;
+    background-color: rgb(167, 167, 168);
+    box-sizing: border-box;
+    border: 1px solid black;
 }
-
-.align-right {
-    float: right;
-}
-
 td {
     border: 1px solid black;
     background-color: lightsteelblue;

@@ -1,32 +1,61 @@
 {% extends "base.html"%}
 
 {% block content %}
-<div id="upper-left">
-    <table>
-        <tr><th>Last Trade Info</th></tr>
-        <tr><td>Time</td>
-            <td>{{time}}</td>
-        </tr>
-        <tr><td>Price</td>
-            <td>{{price}}</td>
-        </tr>
-        <tr><td>Amount</td>
-            <td>{{amount}}</td>
-        </tr>
-        <tr><td>USD Balance</td>
-            <td>{{USD_balance}}</td>
-        </tr>
-        <tr><td>BTC Balance</td>
-            <td>{{BTC_balance}}</td>
-        </tr>
-    </table>
+<div id="container">
+    <div class="row">
+        <div class="column">
+            <table>
+                <tr><th>Last Trade Info</th></tr>
+                <tr><td>Time</td>
+                    <td>{{time}}</td>
+                </tr>
+                <tr><td>Price</td>
+                    <td>{{price}}</td>
+                </tr>
+                <tr><td>Amount</td>
+                    <td>{{amount}}</td>
+                </tr>
+                <tr><td>USD Balance</td>
+                    <td>{{USD_balance}}</td>
+                </tr>
+                <tr><td>BTC Balance</td>
+                    <td>{{BTC_balance}}</td>
+                </tr>
+            </table>
 
-    <form action="/" method="POST">
-        <input type="text" class="align-right"name="amount" />
-        <input type="button" class="align-right" value="Buy Market"/>
-        <input type="button" class="align-right" value="Buy Limit"/>
-        <input type="button" class="align-right" value="Sell Market"/>
-        <input type="button" class="align-right" value="Sell Limit"/>
-    </form>
+            <form action="/" method="POST">
+                <label>BTC Amount
+                    <input type="text" name="amount" />
+                </label>
+                <label>
+                    <input type"text" name="price" />
+                </label>
+                <label>Buy Market
+                    <input type="radio" name="order_type" class="align-right" value="buy_market"/>
+                </label>
+                <label>Buy Limit
+                    <input type="radio" name="order_type" class="align-right" value="buy_limit"/>
+                </label>
+                <label>Sell Market
+                    <input type="radio" name="order_type" class="align-right" value="sell_market"/>
+                </label>
+                <label>Sell Limit
+                    <input type="radio" name="order_type" class="align-right" value="sell_limit"/>
+                </label>
+                <input type="submit" value="Place Order" />
+            </form>
+        </div>
+        <div class="column">
+            <p>Test</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            Test
+        </div>
+        <div class="column">
+            Test right side
+        </div>
+    </div>
 </div>
 {% endblock %}
